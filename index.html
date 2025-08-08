@@ -24,8 +24,30 @@
 </div>
 
 <script>
-  const userId = 'usuario456'; // futuramente virá do Firebase Auth
+  const userId = 'usuario123'; // Futuramente virá do Firebase Auth
 
+  // Esta função é executada assim que a página termina de carregar
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch(`/api/get-image?userId=${userId}`);
+      if (!res.ok) {
+        throw new Error('Falha ao buscar a imagem inicial.');
+      }
+      const data = await res.json();
+
+      if (data.url) {
+        // Se uma URL foi encontrada, atualiza a imagem
+        // Usamos o cache-busting aqui também para garantir que a imagem mais recente seja exibida
+        document.getElementById('profileImage').src = `${data.url}?t=${new Date().getTime()}`;
+      }
+      // Se data.url for nulo, a imagem do placeholder continua
+    } catch (error) {
+      console.error(error);
+      // Mantém a imagem do placeholder em caso de erro
+    }
+  });
+
+  // Sua função de upload continua a mesma
   async function uploadImage() {
     const file = document.getElementById('fileInput').files[0];
     if (!file) return alert('Selecione uma imagem.');
@@ -33,23 +55,20 @@
     const reader = new FileReader();
     reader.onloadend = async function () {
       const base64 = reader.result;
-
       const res = await fetch(`/api/upload?userId=${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(base64)
+        body: JSON.stringify(base64),
       });
 
       const data = await res.json();
       if (data.url) {
-        // Adicionamos um timestamp à URL para "enganar" o cache do navegador
         const imageUrlComCacheBust = `${data.url}?t=${new Date().getTime()}`;
         document.getElementById('profileImage').src = imageUrlComCacheBust;
       } else {
         alert('Erro: ' + data.error);
       }
     };
-
     reader.readAsDataURL(file);
   }
 </script>
