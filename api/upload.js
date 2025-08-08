@@ -1,5 +1,7 @@
 import { put } from '@vercel/blob';
 
+const { url } = await put('articles/blob.txt', 'Hello World!', { access: 'public' });
+
 export default async function handler(req, res) {
   const { userId } = req.query;
   const body = req.body;

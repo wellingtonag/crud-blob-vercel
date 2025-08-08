@@ -3,3 +3,5 @@
 
 # Arquivos da Vercel
 /.vercel
+.vercel
+.env*.local
