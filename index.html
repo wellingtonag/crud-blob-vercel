@@ -42,7 +42,9 @@
 
       const data = await res.json();
       if (data.url) {
-        document.getElementById('profileImage').src = data.url;
+        // Adicionamos um timestamp à URL para "enganar" o cache do navegador
+        const imageUrlComCacheBust = `${data.url}?t=${new Date().getTime()}`;
+        document.getElementById('profileImage').src = imageUrlComCacheBust;
       } else {
         alert('Erro: ' + data.error);
       }
