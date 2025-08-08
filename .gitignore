@@ -1,1 +1,5 @@
-.vercel
+# Dependências do Node.js
+/node_modules
+
+# Arquivos da Vercel
+/.vercel
