@@ -14,12 +14,13 @@ export default async function handler(req, res) {
 
     const { url } = await put(filename, buffer, {
       access: 'public',
-      contentType: 'image/jpeg'
+      contentType: 'image/jpeg',
+      allowOverwrite: true, // Permitir sobrescrever o arquivo existente
     });
 
     return res.status(200).json({ url });
   } catch (err) {
-    console.error('ERRO DETALHADO DO BLOB:', err); // Log detalhado do erro
+    // console.error('ERRO DETALHADO DO BLOB:', err); // Log detalhado para depuração
     return res.status(500).json({ error: 'Erro ao enviar a imagem', detail: err.message });
   }
 }
