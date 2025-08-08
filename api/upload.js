@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ url });
   } catch (err) {
-    // console.error('ERRO DETALHADO DO BLOB:', err); // Log detalhado para depuração
+    console.error('ERRO DETALHADO DO BLOB:', err); // Log detalhado para depuração
     return res.status(500).json({ error: 'Erro ao enviar a imagem', detail: err.message });
   }
 }
